@@ -58,19 +58,20 @@ func (o *OrderedMap) Get(key string) (interface{}, bool) {
 	return val, exists
 }
 
-func (o *OrderedMap) Set(key string, value interface{}) {
+func (o *OrderedMap) Set(key string, value interface{}) *OrderedMap {
 	_, exists := o.values[key]
 	if !exists {
 		o.keys = append(o.keys, key)
 	}
 	o.values[key] = value
+	return o
 }
 
-func (o *OrderedMap) Delete(key string) {
+func (o *OrderedMap) Delete(key string) *OrderedMap {
 	// check key is in use
 	_, ok := o.values[key]
 	if !ok {
-		return
+		return o
 	}
 	// remove from keys
 	for i, k := range o.keys {
@@ -81,6 +82,7 @@ func (o *OrderedMap) Delete(key string) {
 	}
 	// remove from values
 	delete(o.values, key)
+	return o
 }
 
 func (o *OrderedMap) Keys() []string {
